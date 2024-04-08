@@ -1,8 +1,11 @@
 name: Test AWS Connection
 
-# Déclenche ce workflow sur un push dans toutes les branches
-on: [push]
+# Déclenche ce workflow sur la branche test
 
+on:
+  push:
+    branches:
+      - test
 jobs:
   test-connection:
     runs-on: ubuntu-latest
