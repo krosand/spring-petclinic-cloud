@@ -21,6 +21,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-west-3
 
+      - name: Check Security Group Existence
+        run: |
+          chmod +x ./terraform-file/check_sg_existence.sh
+          ./terraform-file/check_sg_existence.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-3
+          GITHUB_ENV: ${{ github.env }}
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -37,4 +47,6 @@ jobs:
       - name: Terraform Apply
         run: terraform apply -auto-approve
         working-directory: ./terraform-file
+        env:
+          TF_VAR_create_sg: ${{ env.create_sg }}
 
