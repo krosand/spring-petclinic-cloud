@@ -26,7 +26,6 @@ jobs:
         run: |
           chmod +x ./terraform-file/check_sg_existence.sh
           ./terraform-file/check_sg_existence.sh
-	working-directory: .
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
