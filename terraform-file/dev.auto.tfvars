@@ -1,5 +1,5 @@
 mykey = "petclinicAdmin"
-ami = "ami-05f804247228852a3"
+ami = "ami-0720246d895625a23"
 region = "eu-west-3"
 instance_type = "t2.micro"  # in order to run petcilinic microservices app, use t3a.medium otherwise you can use t2.micro
 devops_server_secgr = "Development-Server-secgr"

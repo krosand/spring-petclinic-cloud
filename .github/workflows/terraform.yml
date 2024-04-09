@@ -30,7 +30,6 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: eu-west-3
-          GITHUB_ENV: ${{ github.env }}
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
@@ -50,4 +49,14 @@ jobs:
         working-directory: ./terraform-file
         env:
           TF_VAR_create_sg: ${{ env.create_sg }}
+
+      - name: Execute Development Server Userdata Script
+        run: |
+          chmod +x ./terraform-file/development-server-userdata.sh
+          ./terraform-file/development-server-userdata.sh
+        working-directory: ./terraform-file
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-3
 
