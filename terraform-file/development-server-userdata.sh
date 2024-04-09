@@ -1,7 +1,7 @@
 #! /bin/bash
-sleep 30
 echo test
 sudo yum install java-11-amazon-corretto -y
+sudo yum install git -y
 git clone https://github.com/krosand/spring-petclinic-cloud.git
 cd spring-petclinic-cloud
 git checkout main

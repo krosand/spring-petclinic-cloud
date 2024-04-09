@@ -50,6 +50,9 @@ jobs:
         env:
           TF_VAR_create_sg: ${{ env.create_sg }}
 
+      -name: pause
+        run: sleep 20
+
       - name: Execute Development Server Userdata Script
         run: |
           chmod +x ./terraform-file/development-server-userdata.sh
