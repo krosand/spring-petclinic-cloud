@@ -2,9 +2,7 @@
 echo test
 sudo yum install java-11-amazon-corretto -y
 sudo yum install git -y
-git clone https://github.com/krosand/spring-petclinic-cloud.git
-cd spring-petclinic-cloud
-git checkout main
+cd /home/ec2-user & git clone https://github.com/krosand/spring-petclinic-cloud.git & cd spring-petclinic-cloud & git checkout main
 
 hostnamectl set-hostname Development-Server
 sudo amazon-linux-extras install docker -y
