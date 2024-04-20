@@ -1,0 +1,64 @@
+name: Deploy Infrastructure with Terraform
+
+on:
+  push:
+    branches:
+      - tf_deploy
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configurer AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-3
+
+      - name: Check Security Group Existence
+        run: |
+          chmod +x ./terraform-file/check_sg_existence.sh
+          ./terraform-file/check_sg_existence.sh
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.1.7"
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ./terraform-file
+
+      - name: Terraform Plan
+        run: terraform plan
+        working-directory: ./terraform-file
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: ./terraform-file
+        env:
+          TF_VAR_create_sg: ${{ env.create_sg }}
+
+      - name: pause
+        run: sleep 20
+
+      - name: Execute Development Server Userdata Script
+        run: |
+          chmod +x ./terraform-file/development-server-userdata.sh
+          ./terraform-file/development-server-userdata.sh
+        working-directory: .
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: eu-west-3
+
